@@ -33,3 +33,6 @@ Questo script:
 ## Integrazione con Github
 Se il push automatico fallisce, loggarsi manualmente da terminale con `gh auth login`, e successivamente dare `git push` sempre dalla shell.
 Può essere d'aiuto resettare l'istanza dopo aver eseguito il login da terminale.
+
+
+ada
