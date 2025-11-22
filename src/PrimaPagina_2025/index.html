@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--collegamento con stile esterno nella cartella css di nome stile.css-->
+    <link rel="stylesheet" type="text/css" href="css/stile.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prima pagina 5CM </title>
+
+    <!--foglio di stile incorporato -->
+    <style type="text/css">
+    table,th,td
+    {
+        padding: 1em;
+        width: fit-content;
+        border:2px black solid;
+        border-collapse: collapse;
+    }
+    img{
+        border-radius: 10px;
+        display:block;
+        /*margin-left: auto;
+        margin-right: auto;*/
+        width: 50%;
+    }
+    #titolo 
+    {
+        text-align: center;
+        text-decoration-line: overline underline;
+        text-decoration-color: red;
+    }
+    /*Il punto indica la proprieta class puo essere piu volte su piu tag*/
+    .inf
+    {
+        background-color: cornflowerblue;
+    }
+    .sis
+    {
+        background-color: chartreuse;
+    }
+    .tpsit
+    {
+        background-color: pink;
+    }
+    .ia
+    {
+        background-color: yellow;
+    }
+    .mate
+    {
+        background-color: burlywood;
+    }
+    .ita_storia
+    {
+        background-color: plum;
+    }
+    .rec_pot
+    {
+        background-color: yellow;
+    }
+    .inglese
+    {
+        background-color: green;
+    }
+    .ginnastica
+    {
+        background-color: lightcoral;
+    }
+    .gpoi
+    {
+        background-color: lightcyan;
+    }
+    .religione
+    {
+        background-color: blueviolet;
+    }
+    
+    
+
+    body
+        {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <!--tag titolo da 1 a 7-->
+        <h1>Marconi Pieralisi - Jesi </h1>
+        <h3>Simulazione del sito della scuola</h3>
+        <nav>
+            <ul><!--elenco non numerato-->
+                <li><a href="">Informatica</a></li>
+                <li><a href="">Sistemi </a></li>
+                <li><a href="">Tpsit </a></li>
+                <li><a href="">Ia </a></li>
+                <li><a href="">Mate </a></li>
+                <li><a href="">Pcto </a></li>
+                
+                <li><a href="progettoAnno.html">Progetto dell'anno</a></li>
+
+            </ul>
+        </nav>
+    </header><!--fine parte header-->
+    
+    <h1 id="titolo">Pagina della classe 5CM</h1>
+    
+    <section name ="laboratori">  <!-- tag semantico:non visualizzato-->
+      <!-- Elenco numerato: elenco dei laboratori di indirizzo (materie di indirizzo) -->
+     <ol>
+      <li style="color: blueviolet;">Laboratorio di Informatica 2-21</li>
+      <li>Laboratorio di Sistemi 2-20</li>
+      <li>Laboratorio di Tpsit 2-19</li>
+   </ol>
+   </section>
+
+<section name="orario" class="orario">
+    <p class="orario">Orario di lezione</p>
+    <table>
+        <tr><!--riga-->
+            <th>Orario</th>
+            <th>Lunedi</th>
+            <th>Martedi</th>
+            <th>Mercoledi</th>
+            <th>Giovedi</th>
+            <th>Venerdi</th>
+            <th>Sabato</th>
+        </tr>
+        <tr><!--riga con le prime ore -->
+            <td> 1 ora </td>
+            <td rowspan="2" class="inf"> Informatica </td><!--LUNEDI -->
+            <td rowspan="2" class="tpsit"> Tpsit </td> <!--MARTEDI-->
+            <td class="sis"> Sistemi </td><!--MERCOLEDI-->
+            <td class="tpsit"> Tpsit </td><!--GIOVEDI-->
+            <td class="gpoi"> GPOI </td><!--VENERDI-->
+            <td class="ia"> IA </td><!--SABATO-->
+        </tr>
+        <tr><!--riga con le seconde ore -->
+            <td> 2 ora </td>
+            <td class="inglese"> Inglese </td><!--MERCOLEDI-->
+            <td rowspan="2" class="ginnastica"> Scienze motorie </td><!--GIOVEDI-->
+            <td class="mate"> Matematica </td><!--VENERDI-->
+            <td rowspan="2" class="gpoi"> GPOI </td><!--SABATO-->
+        </tr>    
+        <tr><!--riga con le terze ore -->
+            <td> 3 ora </td>
+            
+            <td rowspan="2" class="sis"> Sistemi </td> <!--LUNEDI-->
+            <td class="rec_pot"> Rec/Pot </td>
+            <td class="ita_storia"> Italiano/storia </td><!--MERCOLEDI-->
+            <td rowspan="2" class="inglese"> Inglese </td><!--VENERDI-->
+           
+        </tr> 
+        <tr><!--riga con le quarte ore -->
+            <td> 4 ora </td>
+            <td class="sis"> Sistemi </td> <!--MARTEDI-->
+            <td class="inf"> Informatica</td><!--MERCOLEDI-->
+            <td calss="ita_storia"> Italiano/storia </td><!--GIOVEDI-->
+            <td class="mate"> Matematica </td><!--SABATO-->
+           
+        </tr> 
+        <tr><!--riga con le quinte ore -->
+            <td> 5 ora </td>
+            <td class="mate"> Matematica</td><!--LUNEDI -->
+            <td class="ita_storia"> Italiano/storia </td> <!--MARTEDI-->
+            <td rowspan="2"class="inf"> Informatica </td><!--MERCOLEDI-->
+            <td class="religione"> Religione </td><!--GIOVEDI-->
+            <td rowspan="2"class="ita_storia"> Italiano/storia </td><!--VENERDI-->
+            <td class="inf"> Informatica </td><!--SABATO-->
+        </tr> 
+        <tr><!--riga con le sesta ore -->
+            <td> 6 ora </td>
+            <td class="ita_storia"> Italiano/storia</td><!--LUNEDI -->
+        </tr> 
+    </table>
+</section>
+
+<section name="immagini">
+    <!-- 7. Link: link del sito della scuola, che si deve aprire in un'altra finestra -->
+    <a href="http://www.iismarconipieralisi.it" target="_blank">Link al sito del IIS Marconi Pieralisi </a>
+    <br>
+
+
+    <a href="http://www.iismarconipieralisi.it" target="_blank">
+        <img src="img/scuuola.jpeg" alt="Marconi Pieralisi">
+    </a>
+    
+    <br>
+</section>
+
+    <footer>
+        <p>
+            Indirizzo
+            Via Raffaello Sanzio, 8
+            60035 - JESI (AN)
+        </p>
+        
+    </footer>
+</body>
+</html>
