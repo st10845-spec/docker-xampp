@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Esempio Form</title>
+</head>
+
+<body>
+
+    <h1>Form con GET</h1>
+    <form action="submit.php" method="GET">
+        <label>Nome:</label>
+        <input type="text" name="nome" required><br>
+
+        <label>Password:</label>
+        <input type="password" name="password" required><br>
+
+        <label>Email:</label>
+        <input type="email" name="email" required><br>
+
+        <button type="submit">Invia con GET</button>
+    </form>
+
+    <h1>Form con POST</h1>
+    <form action="submit2.php" method="POST">
+        <label>Nome:</label>
+        <input type="text" name="nome" required><br>
+
+        <label>Password:</label>
+        <input type="password" name="password" required><br>
+
+        <label>Email:</label>
+        <input type="email" name="email" required><br>
+
+        <button type="submit">Invia con POST</button>
+    </form>
+
+</body>
+</html>
