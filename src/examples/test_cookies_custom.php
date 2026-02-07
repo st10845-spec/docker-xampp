@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <h1>Crea un nuovo cookie</h1>
+    //Se il campo action è vuoto-> invia i dati a se stesso(la pagina che le genera)
     <form method="POST" action="">
         <label for="cookie_name">Nome del cookie:</label>
         <input type="text" id="cookie_name" name="cookie_name" required>
@@ -38,8 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <h2>Cookie attualmente in uso</h2>
     <?php
+    //se non è vuoto
     if (!empty($_COOKIE)) {
         echo "<ul>";
+        //itero l'array associativo e lo stampa
         foreach ($_COOKIE as $name => $value) {
             echo "<li><strong>$name</strong>: $value</li>";
         }
