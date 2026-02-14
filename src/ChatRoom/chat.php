@@ -89,7 +89,6 @@ $result = $stmt->get_result();
 </section>
 
 
-
 <script>
     // scroll automatico all'ultimo messaggio
     const chatBox = document.getElementById("chatBox");
