@@ -148,16 +148,22 @@ $result = $connection->query("SELECT * FROM chatrooms");
 </head>
 <body>
     <div class="container">
-        <h2>Ciao <?php echo htmlspecialchars($_SESSION['username']); ?> 👋</h2>
+        <h2>Ciao <?php echo htmlspecialchars($_SESSION['username']); ?>👋</h2>
 
         <h3>Chatroom disponibili:</h3>
         <ul>
             <?php while ($row = $result->fetch_assoc()): ?>
-            <li>
-                <a href="chat.php?id=<?php echo $row['id']; ?>">
-                    <?php echo htmlspecialchars($row['name']); ?>
-                </a>
-            </li>
+                <li style="display:flex; justify-content:space-between; align-items:center;">
+                    <a href="chat.php?id=<?php echo $row['id']; ?>">
+                        <?php echo htmlspecialchars($row['name']); ?>
+                    </a>
+
+                    <form method="POST" action="elimina_chatroom.php" 
+                        onsubmit="return confirm('Sei sicuro di voler eliminare questa chatroom?');">
+                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                        <button style="background-color:#e74c3c;">Elimina</button>
+                    </form>
+                </li>
             <?php endwhile; ?>
         </ul>
 
@@ -166,7 +172,6 @@ $result = $connection->query("SELECT * FROM chatrooms");
         <form method="POST" action="crea_chatroom.php">
             <input type="text" name="nome" placeholder="Nome chatroom" required>
             <button type="submit" name="azione" value="crea">Crea</button>
-            <button type="submit" name="azione" value="elimina">Elimina</button>
         </form>
         <a class="logout" href="logout.php">Logout</a>
     </div>

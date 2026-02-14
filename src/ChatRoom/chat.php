@@ -29,7 +29,6 @@ $result = $stmt->get_result();
 ?>
 
 
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -58,7 +57,8 @@ $result = $stmt->get_result();
                 $data_corrente = date("d/m/Y", strtotime($row['data']));
 
                 // Stampa la data solo se cambia
-                if ($data_corrente !== $ultima_data) {
+                if ($data_corrente !== $ultima_data) 
+                {
                     echo '<div class="chat-date">' . $data_corrente . '</div>';
                     $ultima_data = $data_corrente;
                 }
