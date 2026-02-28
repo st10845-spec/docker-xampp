@@ -6,7 +6,7 @@ $error = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["password"])) 
 {
 
-    $connection = new mysqli("db", "user", "user", "ChatRoom", 3306);
+    $connection = new mysqli("db", "user", "user", "LinkShortner", 3306);
     if ($connection->connect_error) 
     {
         die("Errore DB");
@@ -14,10 +14,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["p
 
     $username = $_POST['username'];
     $password = $_POST['password'];
-    $email=$POST['email'];
+    $email=$_POST['email'];
     $hash = password_hash($password, PASSWORD_DEFAULT);
 
-    $check = $connection->prepare("SELECT username FROM utenti WHERE username = ?");
+    $check = $connection->prepare("SELECT username FROM Users WHERE username = ?");
     $check->bind_param("s", $username);
     $check->execute();
     $check->store_result();
@@ -28,8 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["p
     } 
     else 
     {
-        $stmt = $connection->prepare("INSERT INTO utenti (username, password_hash) VALUES (?, ?)");
-        $stmt->bind_param("ss", $username, $hash);
+        $stmt = $connection->prepare("INSERT INTO Users (username, password,email) VALUES (?, ?,?)");
+        $stmt->bind_param("sss", $username, $hash,$email);
 
         if ($stmt->execute()) 
         {

@@ -8,7 +8,8 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Controllo input
-if (!isset($_POST['nome']) || trim($_POST['nome']) === '') {
+if (!isset($_POST['nome']) || trim($_POST['nome']) === '') 
+{
     die("Nome della chatroom non valido");
 }
 

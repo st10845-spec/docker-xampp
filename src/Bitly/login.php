@@ -9,14 +9,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["p
     $username = $_POST['username'];
     $user_password = $_POST['password'];
 
-    $connection = new mysqli("db", "user", "user", "ChatRoom", 3306);
+    $connection = new mysqli("db", "user", "user", "LinkShortner", 3306);
 
     if ($connection->connect_error) 
     {
         die("Errore DB");
     }
 
-    $stmt = $connection->prepare("SELECT username, password_hash FROM utenti WHERE username = ?");
+    $stmt = $connection->prepare("SELECT username, password  FROM Users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["p
     {
         $row = $result->fetch_assoc();
 
-        if (password_verify($user_password, $row['password_hash'])) 
+        if (password_verify($user_password, $row['password'])) 
         {
             $_SESSION['username'] = $username;
             header("Location: dashboard.php");

@@ -107,9 +107,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["p
         <a href="registrazione.php">Registrati</a>
     </div>
 
+     <!-- se c'è un errore->in $login_error -->
     <?php if ($login_error): ?>
         <div class="notification is-danger mt-3">
-            <?= htmlspecialchars($login_error) ?>
+            <?= htmlspecialchars($login_error) ?> 
         </div>
     <?php endif; ?>
 

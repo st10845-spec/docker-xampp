@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["p
     $check = $connection->prepare("SELECT username FROM utenti WHERE username = ?");
     $check->bind_param("s", $username);
     $check->execute();
-    $check->store_result();
+    $check->store_result();//serve a salvare il risultato della query in memoria
 
     if ($check->num_rows > 0) 
     {
@@ -133,6 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["p
 
 <?php if ($success): ?>
 <script>
+    // se la registrazione è andata a buon fine a 2,5 secondi la rimanda alla pagina php
     setTimeout(() => { window.location.href = "login.php";}, 2500);
 </script>
 <?php endif; ?>
