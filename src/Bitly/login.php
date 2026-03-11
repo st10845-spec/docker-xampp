@@ -3,21 +3,15 @@ session_start();
 
 $login_error = "";
 
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["password"])) 
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["email"], $_POST["password"])) 
 {
-
-    $username = $_POST['username'];
+    $email = $_POST['email'];
     $user_password = $_POST['password'];
 
-    $connection = new mysqli("db", "user", "user", "LinkShortner", 3306);
+    require 'connessione.php';
 
-    if ($connection->connect_error) 
-    {
-        die("Errore DB");
-    }
-
-    $stmt = $connection->prepare("SELECT username, password  FROM Users WHERE username = ?");
-    $stmt->bind_param("s", $username);
+    $stmt = $conn->prepare("SELECT email, password FROM Users WHERE email = ?");
+    $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -27,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["p
 
         if (password_verify($user_password, $row['password'])) 
         {
-            $_SESSION['username'] = $username;
+            $_SESSION['email'] = $email;
             header("Location: dashboard.php");
             exit;
         } 
@@ -42,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["p
     }
     
     $stmt->close();
-    $connection->close();
+    $conn->close();
 }
 ?>
 <!DOCTYPE html>
@@ -50,51 +44,60 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["username"], $_POST["p
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+    <style>
+        body 
+        {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f5f5f5;
+        }
+
+        .login-box 
+        {
+            width: 100%;
+            max-width: 420px;
+            padding: 1.5rem;
+        }
+    </style>
 </head>
 <body>
-    <form method="POST">
-        <h1 class="title has-text-centered">Link Shorter</h1>
-        <h2 class="subtitle has-text-centered">Login</h2>
+    <div class="box login-box">
+        <form method="POST">
+            <h1 class="title has-text-centered">Link Shortener</h1>
+            <h2 class="subtitle has-text-centered">Login</h2>
 
-        <div class="field">
-            <label class="label">Username</label>
-            <div class="control">
-                <input class="input" name="username" required>
+            <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                    <input class="input" type="email" name="email" required>
+                </div>
             </div>
-        </div>
 
-        <div class="field">
-            <label class="label">Password</label>
-            <div class="control">
-                <input class="input" type="password" name="password" required>
+            <div class="field">
+                <label class="label">Password</label>
+                <div class="control">
+                    <input class="input" type="password" name="password" required>
+                </div>
             </div>
-        </div>
 
-        <div class="field">
-            <label class="label">Email</label>
-            <div class="control">
-                <input class="input" type="email" name="email" required>    
+            <div class="field">
+                <button class="button is-primary is-fullwidth">Accedi</button>
             </div>
+        </form>
+
+        <div class="has-text-centered mt-3">
+            Sei qui per la prima volta?
+            <a href="registrazione.php">Registrati</a>
         </div>
 
-        <div class="field">
-            <button class="button is-primary is-fullwidth">
-                Accedi
-            </button>
-        </div>
-    </form>
-    <div class="has-text-centered mt-3">
-        Sei qui per la prima volta?
-        <a href="registrazione.php">Registrati</a>
+        <?php if ($login_error): ?>
+            <div class="notification is-danger mt-3">
+                <?= htmlspecialchars($login_error) ?>
+            </div>
+        <?php endif; ?>
     </div>
-
-    <?php if ($login_error): ?>
-        <div class="notification is-danger mt-3">
-            <?= htmlspecialchars($login_error) ?>
-        </div>
-    <?php endif; ?>
-
-</div>
-
 </body>
 </html>
