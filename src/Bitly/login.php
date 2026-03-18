@@ -1,14 +1,12 @@
 <?php
 session_start();
-
+require 'connessione.php';
 $login_error = "";
 
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["email"], $_POST["password"])) 
 {
     $email = $_POST['email'];
     $user_password = $_POST['password'];
-
-    require 'connessione.php';
 
     $stmt = $conn->prepare("SELECT email, password FROM Users WHERE email = ?");
     $stmt->bind_param("s", $email);
@@ -23,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["email"], $_POST["pass
         {
             $_SESSION['email'] = $email;
             header("Location: dashboard.php");
-            exit;
+            exit;   
         } 
         else 
         {
@@ -34,11 +32,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["email"], $_POST["pass
     {
         $login_error = "Utente non trovato. Registrati prima.";
     }
-    
+
     $stmt->close();
     $conn->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -63,6 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["email"], $_POST["pass
         }
     </style>
 </head>
+
 <body>
     <div class="box login-box">
         <form method="POST">
@@ -100,4 +100,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["email"], $_POST["pass
         <?php endif; ?>
     </div>
 </body>
-</html>

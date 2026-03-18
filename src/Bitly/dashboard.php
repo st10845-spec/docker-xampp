@@ -1,5 +1,6 @@
 <?php 
 session_start();
+
 if (!isset($_SESSION['email'])) 
 {
     header("Location: login.php");
@@ -9,40 +10,55 @@ if (!isset($_SESSION['email']))
 require 'connessione.php';
 
 $url_shortato = "";
+$login_error = "";
 
 // Accorcia un nuovo link
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['original_url'])) 
 {
     $original_url = trim($_POST['original_url']);
 
-    if (filter_var($original_url, FILTER_VALIDATE_URL)) 
+    // Controlla se il link è già presente
+    $query = $conn->prepare("SELECT original_URL FROM Links WHERE original_URL = ?");
+    $query->bind_param("s", $original_url);
+    $query->execute();
+    $result = $query->get_result();
+
+    if ($result->num_rows >= 1)
     {
-        // Genera codice univoco (controlla collisioni)
-        do {
-            $short_code = substr(md5(uniqid()), 0, 6);
-            $check = $conn->prepare("SELECT ID FROM Links WHERE short_URL = ?");
-            $check->bind_param("s", $short_code);
-            $check->execute();
-            $check->store_result();
-        } while ($check->num_rows > 0);
-        $check->close();
-
-        $stmt = $conn->prepare(
-            "INSERT INTO Links (ID_utente, original_URL, short_URL, n_visits) 
-             VALUES ((SELECT ID FROM Users WHERE email = ?), ?, ?, 0)"
-        );
-        $stmt->bind_param("sss", $_SESSION['email'], $original_url, $short_code);
-
-        if ($stmt->execute()) 
-        {
-            $url_shortato = "http://localhost/" . $short_code;
-        }
-
-        $stmt->close();
+        $login_error = "Link già presente";
     }
+    else
+    {
+        if (filter_var($original_url, FILTER_VALIDATE_URL)) 
+        {
+            // Genera codice univoco (controlla collisioni)
+            do 
+            {
+                $short_code = substr(md5(uniqid()), 0, 6);
+                $check = $conn->prepare("SELECT ID FROM Links WHERE short_URL = ?");
+                $check->bind_param("s", $short_code);
+                $check->execute();
+                $check->store_result();
+            } while ($check->num_rows > 0);
+            $check->close();
+
+            $stmt = $conn->prepare(
+                "INSERT INTO Links (ID_utente, original_URL, short_URL, n_visits) 
+                 VALUES ((SELECT ID FROM Users WHERE email = ?), ?, ?, 0)"
+            );
+            $stmt->bind_param("sss", $_SESSION['email'], $original_url, $short_code);
+
+            if ($stmt->execute()) 
+            {
+                $url_shortato = "http://localhost/" . $short_code;
+            }
+            $stmt->close();
+        }
+    }
+    $query->close();
 }
 
-// Carica lista link dell'utente
+// Carica lista link dell'utente — SEMPRE, non solo dopo POST
 $links = [];
 $stmt_list = $conn->prepare(
     "SELECT l.original_URL, l.short_URL, l.n_visits, l.created_at 
@@ -80,7 +96,7 @@ $conn->close();
 
     <!-- Header -->
     <div class="is-flex is-justify-content-space-between is-align-items-center mb-5">
-        <h1 class="title mb-0">🔗 Link Shortener</h1>
+        <h1 class="title mb-0" style="color: red;">🔗 Link Shortener</h1>
         <div class="is-flex is-align-items-center gap-3">
             <span class="mr-3">👋 <?= htmlspecialchars($_SESSION['email']) ?></span>
             <a href="logout.php" class="button is-danger is-small">Logout</a>
@@ -94,7 +110,7 @@ $conn->close();
             <div class="field has-addons">
                 <div class="control is-expanded">
                     <input class="input url-input" type="url" name="original_url" 
-                           placeholder="https://esempio.com/url-molto-lungo..." required>
+                           placeholder="https://esempio.com/url" required>
                 </div>
                 <div class="control">
                     <button class="button is-primary">Accorcia</button>
@@ -104,10 +120,16 @@ $conn->close();
 
         <?php if ($url_shortato): ?>
             <div class="notification is-success is-light mt-3 mb-0">
-                ✅ <strong>Link accorciato:</strong>
+                <strong>Link accorciato:</strong>
                 <input class="input url-input mt-2" type="text" 
                        value="<?= htmlspecialchars($url_shortato) ?>" 
                        readonly onclick="this.select()">
+            </div>
+        <?php endif; ?>
+
+        <?php if ($login_error): ?>
+            <div id="error-message" class="notification is-danger mt-3 mb-0">
+                <?= htmlspecialchars($login_error) ?>
             </div>
         <?php endif; ?>
     </div>
@@ -134,7 +156,7 @@ $conn->close();
                         </a>
                     </td>
                     <td>
-                        <a href="http://localhost/<?= htmlspecialchars($link['short_URL']) ?>" target="_blank">
+                        <a href="redirect.php?code=<?= htmlspecialchars($link['short_URL']) ?>" target="_blank">
                             localhost/<?= htmlspecialchars($link['short_URL']) ?>
                         </a>
                     </td>
@@ -152,6 +174,14 @@ $conn->close();
     <?php endif; ?>
 
 </div>
+
+<script>
+// Aggiorna la pagina ogni 5 secondi per aggiornare le visite
+setInterval(function() 
+{
+    location.reload();
+}, 5000);
+</script>
 
 </body>
 </html>
